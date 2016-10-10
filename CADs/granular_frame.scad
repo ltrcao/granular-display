@@ -13,6 +13,7 @@ MOLD_HEIGHT = 1;
 PIN_RADIUS = 1;
 PIN_HEIGHT = 10;
 PIN_CONNECTION_THICKNESS = 0.5;
+PIN_CONNECTION_WIDTH = 1;
 PIN_GUIDE_RADIUS = 2;
 PIN_GUIDE_THICKNESS = 1;
 PIN_GUIDE_HEIGHT = 5;
@@ -95,10 +96,10 @@ if (RENDER_PUSH_PIN) {
                         translate([CELL_RADIUS + CELL_SEPARATION_DISTANCE, CELL_RADIUS + CELL_SEPARATION_DISTANCE, -PIN_HEIGHT])
                             cylinder(r=PIN_RADIUS, h=PIN_HEIGHT);
                         if (RENDER_PUSH_PIN_CONNECTION) {
-                            translate([CELL_SEPARATION_DISTANCE + CELL_RADIUS - PIN_CONNECTION_THICKNESS / 2, 0, -PIN_HEIGHT - PIN_CONNECTION_THICKNESS])
-                                cube([PIN_CONNECTION_THICKNESS, cellSideLength, PIN_CONNECTION_THICKNESS]);
-                            translate([0, CELL_SEPARATION_DISTANCE + CELL_RADIUS - PIN_CONNECTION_THICKNESS / 2, -PIN_HEIGHT - PIN_CONNECTION_THICKNESS])
-                                cube([cellSideLength, PIN_CONNECTION_THICKNESS, PIN_CONNECTION_THICKNESS]);
+                            translate([CELL_SEPARATION_DISTANCE + CELL_RADIUS - PIN_CONNECTION_WIDTH / 2, 0, -PIN_HEIGHT])
+                                cube([PIN_CONNECTION_WIDTH, cellSideLength, PIN_CONNECTION_THICKNESS]);
+                            translate([0, CELL_SEPARATION_DISTANCE + CELL_RADIUS - PIN_CONNECTION_WIDTH / 2, -PIN_HEIGHT])
+                                cube([cellSideLength, PIN_CONNECTION_WIDTH, PIN_CONNECTION_THICKNESS]);
                         }
                     }
     }
