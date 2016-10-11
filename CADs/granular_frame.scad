@@ -1,5 +1,5 @@
 //// Dimension configuration ////
-CELL_RADIUS = 3;
+CELL_RADIUS = 1.5;
 FRAME_THICKNESS = 2;
 NUM_CELL_X = 3;
 NUM_CELL_Y = 3;
@@ -14,12 +14,12 @@ PIN_RADIUS = 1;
 PIN_LOCK_RADIUS = 1.45;
 PIN_LOCK_HEIGHT = 1;
 PIN_HEIGHT = 8;
-PIN_CONNECTION_THICKNESS = 0.5;
-PIN_CONNECTION_WIDTH = 1;
+PIN_CONNECTION_THICKNESS = 0.45;
+PIN_CONNECTION_WIDTH = 0.45;
 PIN_GUIDE_RADIUS = 2;
 PIN_GUIDE_LOCK_RADIUS = 1.6;
 PIN_GUIDE_LOCK_HEIGHT = 0.75;
-PIN_GUIDE_THICKNESS = 0.5;
+PIN_GUIDE_THICKNESS = 0.6;
 PIN_GUIDE_FOUNDATION_THICKNESS = 1;
 PIN_GUIDE_TOTAL_HEIGHT = 1 + PIN_GUIDE_FOUNDATION_THICKNESS;
 /////////////////////////////////
@@ -27,11 +27,14 @@ PIN_GUIDE_TOTAL_HEIGHT = 1 + PIN_GUIDE_FOUNDATION_THICKNESS;
 
 //// Render configuration ////
 RENDER_FRAME = true;
+RENDER_MARGIN = false;
 RENDER_MOLD = false;
-RENDER_PUSH_PIN_GUIDE = true;
+RENDER_PUSH_PIN_GUIDE = false;
 RENDER_PUSH_PIN = true;
 RENDER_PUSH_PIN_CONNECTION = true;
-RENDER_PUSH_PIN_LOCK = true;
+RENDER_PUSH_PIN_LOCK = false;
+
+RENDER_EXPLODE = false;
 //////////////////////////////
 
 
@@ -57,7 +60,7 @@ if (RENDER_FRAME) {
 
 
 // create margins
-if (RENDER_FRAME) {
+if (RENDER_FRAME && RENDER_MARGIN) {
     color("aqua") {
         for (offsetX = [-FRAME_MARGIN_X, cellSideLength * NUM_CELL_X])
             union() {
@@ -93,7 +96,7 @@ if (RENDER_MOLD) {
 // create push pins with connection lines
 if (RENDER_PUSH_PIN) {
     color("greenyellow") 
-    translate([0, 0, -15]) {
+    translate([0, 0, RENDER_EXPLODE ? -15 : 0]) {
         for (offsetX = [0 : cellSideLength : cellSideLength * NUM_CELL_X - 0.001]) 
             for (offsetY = [0 : cellSideLength : cellSideLength * NUM_CELL_Y - 0.001]) 
                 translate([offsetX, offsetY, 0])
@@ -122,7 +125,7 @@ if (RENDER_PUSH_PIN) {
 // create push pin guide
 if (RENDER_PUSH_PIN_GUIDE) {
     color("magenta") 
-    translate([0, 0, -5]) {
+    translate([0, 0, RENDER_EXPLODE ? -5 : 0]) {
         for (offsetX = [0 : cellSideLength : cellSideLength * NUM_CELL_X - 0.001]) 
             for (offsetY = [0 : cellSideLength : cellSideLength * NUM_CELL_Y - 0.001]) 
                 translate([offsetX, offsetY, 0]) {
