@@ -1,28 +1,13 @@
 // ===========================================================================
 // Bracket for stepper motor, including anchor.
 //     Stepper motor is assumed to have NEMA 17 dimensions.
-//     Metric screws are used. Their diameters may be changed below.
+//     Metric screws are used. Their diameters may be changed in the config.
 // ===========================================================================
 
 // Specifications are for NEMA 17 dimensions.
 // Reference: http://www.reprap.org/wiki/File:Step_motor_nema_17_stepper_motor.jpg
 
-// Parameters for stepper bracket
-BRACKET_EDGE_LENGTH = 42.3;
-BRACKET_DIAMETER = 22;
-BRACKET_THICKNESS = 4;
-SCREW_DIAMETER = 3;
-SCREW_DISTANCE = 31;
-SHAFT_HEIGHT = 24;
-// ------------------------------
-
-// Parameters for anchor
-ANCHOR_THICKNESS = 4;
-ANCHOR_SHAFT_OVERHEAD = 4;
-ANCHOR_WIDTH = 40;
-ANCHOR_SCREW_MARGIN = 8;
-ANCHOR_SCREW_DIAMETER = 3;
-// ---------------------
+include <config.scad>;
 
 $fn = 20;
 module stepper_bracket() {
