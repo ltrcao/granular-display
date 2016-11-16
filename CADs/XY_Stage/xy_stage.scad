@@ -4,6 +4,7 @@
 
 include <stepper_bracket.scad>;
 include <double_pulley.scad>;
+include <stage_bracket.scad>;
 
 STAGE_LENGTH = 300;
 STAGE_THICKNESS = 10;
@@ -35,7 +36,7 @@ module stepper_motor(pulleyOffset) {
     }
     
     translate([BRACKET_EDGE_LENGTH / 2, BRACKET_EDGE_LENGTH / 2, -SHAFT_HEIGHT + pulleyOffset]) {
-        cylinder(r=10, h=12);
+        cylinder(r=STEPPER_MOTOR_PULLEY_DIAMETER / 2, h=STEPPER_MOTOR_PULLEY_HEIGHT);
     }
 }
 
@@ -66,8 +67,8 @@ module full_double_pulley() {
         translate([0, 0, ANCHOR_THICKNESS + PULLEY_WIDTH + PULLEY_DISTANCE + 1])
             cylinder(r=PULLEY_OUTER_DIAMETER / 2, h=PULLEY_WIDTH - 2);
     }
-
 }
+
 color("thistle")
 union() {
     translate([PULLEY_EDGE_LENGTH / 2 + BRACKET_EDGE_LENGTH / 2, 
@@ -81,4 +82,73 @@ union() {
                STAGE_THICKNESS]) {
         full_double_pulley();
     }
+}
+
+// Horizontal rod brackets
+module full_stage_bracket() {
+    stage_bracket();
+
+    translate([PULLEY_CENTER + PULLEY_BACK_THICKNESS, PULLEY_CENTER, 0]) {
+        // M8 screw
+        cylinder(r=PULLEY_INNER_DIAMETER / 2, h=PULLEY_HEIGHT);
+
+        // 608ZZ bearings
+        translate([0, 0, ANCHOR_THICKNESS + 1])
+            cylinder(r=PULLEY_OUTER_DIAMETER / 2, h=PULLEY_WIDTH - 2);
+        translate([0, 0, ANCHOR_THICKNESS + PULLEY_WIDTH + PULLEY_DISTANCE + 1])
+            cylinder(r=PULLEY_OUTER_DIAMETER / 2, h=PULLEY_WIDTH - 2);
+    }
+}
+
+color("yellow")
+translate([0, 0, STAGE_THICKNESS])
+union() {
+    translate([BRACKET_EDGE_LENGTH / 2, STAGE_LENGTH / 2, 0])
+        full_stage_bracket();
+        
+    translate([STAGE_LENGTH - BRACKET_EDGE_LENGTH / 2, STAGE_LENGTH / 2, 0])
+        translate([0, PULLEY_EDGE_LENGTH, 0])
+            rotate([0, 0, 180])
+                full_stage_bracket();
+}
+
+// Timing belts. These are manually placed so changing configurations might mess them up.
+color("lightcyan") {
+    translate([BRACKET_EDGE_LENGTH / 2 - 2 - STEPPER_MOTOR_PULLEY_DIAMETER / 2, 65, STAGE_THICKNESS + ANCHOR_THICKNESS + 1])
+        cube([2, 175, 6]);
+
+    translate([BRACKET_EDGE_LENGTH / 2 + STEPPER_MOTOR_PULLEY_DIAMETER / 2, 65, STAGE_THICKNESS + ANCHOR_THICKNESS + 1])
+        cube([2, 90, 6]);
+        
+    translate([STAGE_LENGTH - BRACKET_EDGE_LENGTH / 2 - 2 + STEPPER_MOTOR_PULLEY_DIAMETER / 2, 
+               65, 
+               STAGE_THICKNESS + ANCHOR_THICKNESS + 1 + PULLEY_WIDTH + PULLEY_DISTANCE])
+        cube([2, 175, 6]);
+
+    translate([STAGE_LENGTH - BRACKET_EDGE_LENGTH / 2 - STEPPER_MOTOR_PULLEY_DIAMETER / 2,
+               65, 
+               STAGE_THICKNESS + ANCHOR_THICKNESS + 1 + PULLEY_WIDTH + PULLEY_DISTANCE])
+        cube([2, 90, 6]);
+
+    translate([20,
+               252,
+               STAGE_THICKNESS + ANCHOR_THICKNESS + 1])
+        cube([250, 2, 6]);
+
+    translate([20,
+               252,
+               STAGE_THICKNESS + ANCHOR_THICKNESS + 1 + PULLEY_WIDTH + PULLEY_DISTANCE])
+        cube([250, 2, 6]);
+        
+    translate([32,
+               165,
+               STAGE_THICKNESS + ANCHOR_THICKNESS + 1 + PULLEY_WIDTH + PULLEY_DISTANCE])
+        rotate([0, 0, 15])
+        cube([2, 75, 6]);
+
+    translate([268,
+               165,
+               STAGE_THICKNESS + ANCHOR_THICKNESS + 1])
+        rotate([0, 0, -15])
+        cube([2, 75, 6]);
 }
