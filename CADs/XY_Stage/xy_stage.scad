@@ -5,6 +5,7 @@
 include <stepper_bracket.scad>;
 include <double_pulley.scad>;
 include <stage_bracket.scad>;
+include <platform.scad>;
 
 STAGE_LENGTH = 300;
 STAGE_THICKNESS = 10;
@@ -112,6 +113,12 @@ union() {
                 full_stage_bracket();
 }
 
+// Platform
+translate([172, 174, STAGE_THICKNESS]) {
+    rotate([0, 0, 180])
+        platform();
+}
+
 // Timing belts. These are manually placed so changing configurations might mess them up.
 color("lightcyan") {
     translate([BRACKET_EDGE_LENGTH / 2 - 2 - STEPPER_MOTOR_PULLEY_DIAMETER / 2, 65, STAGE_THICKNESS + ANCHOR_THICKNESS + 1])
@@ -151,4 +158,31 @@ color("lightcyan") {
                STAGE_THICKNESS + ANCHOR_THICKNESS + 1])
         rotate([0, 0, -15])
         cube([2, 75, 6]);
+        
+    translate([167,
+               155,
+               STAGE_THICKNESS + ANCHOR_THICKNESS + 1])
+        cube([100, 2, 6]);
+        
+    translate([32,
+               155,
+               STAGE_THICKNESS + ANCHOR_THICKNESS + 1 + PULLEY_WIDTH + PULLEY_DISTANCE])
+        cube([100, 2, 6]);
+        
+    translate([170,
+               172, 
+               STAGE_THICKNESS + ANCHOR_THICKNESS + 1 + PULLEY_WIDTH + PULLEY_DISTANCE])
+        cube([90, 2, 6]);
+
+    
+    translate([40, 172, STAGE_THICKNESS + ANCHOR_THICKNESS + 1])
+        cube([90, 2, 6]);
+        
 }
+
+// Horizontal rod
+translate([BRACKET_EDGE_LENGTH / 2, 
+           STAGE_LENGTH / 2 + PULLEY_EDGE_LENGTH / 2, 
+           PULLEY_HEIGHT + ROD_BRACKET_DIAMETER / 2 + ROD_BRACKET_THICKNESS / 2 + STAGE_THICKNESS])
+    rotate([0, 90, 0])
+        cylinder(r=ROD_BRACKET_DIAMETER / 2, h=260);
