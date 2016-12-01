@@ -4,7 +4,7 @@
 
 include <config.scad>;
 
-$fn = 20;
+$fn = 40;
 
 // Timing belt trappers
 module timing_belt_trapper() {
@@ -19,10 +19,10 @@ module timing_belt_trapper() {
             }
         }
 
-        translate([TIMING_BELT_TROUGH, 0, 0]) {
-            rotate([0, -125, 0])
-                cube([100, 100, 100]);
-        }
+        //translate([TIMING_BELT_TROUGH, 0, 0]) {
+        //    rotate([0, -125, 0])
+        //        cube([100, 100, 100]);
+        //}
     }
 
     for (offset = [0 : TIMING_BELT_PITCH : 5 * TIMING_BELT_PITCH]) {
@@ -81,3 +81,5 @@ module platform() {
     }
 
 }
+
+platform();
