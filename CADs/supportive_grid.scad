@@ -1,5 +1,6 @@
 // The design is parametric, so only the constants below need to be changed.
 //// Dimension configuration ////
+//$fn = 40; // Set $fn to 40 before exporting to .stl to round the pinheads.
 NUM_GRID_X = 24;
 NUM_GRID_Y = 18;
 GRID_LENGTH_X = 10;
@@ -64,9 +65,18 @@ module pin_grid() {
         for (offsetY = [0 : GRID_LENGTH_Y : GRID_LENGTH_Y * NUM_GRID_Y - 0.001]) 
             translate([offsetX + THREAD_WIDTH_X / 2, offsetY + THREAD_WIDTH_Y / 2, 0])
                 union() {
-                    translate([GRID_LENGTH_X / 2, GRID_LENGTH_Y / 2, -PIN_HEIGHT])
-                        cylinder(r=PIN_RADIUS, h=PIN_HEIGHT);
+                    translate([GRID_LENGTH_X / 2, GRID_LENGTH_Y / 2, -PIN_HEIGHT]) {
+                        hull() {
+                            // Actual pin
+                            cylinder(r=PIN_RADIUS, h=PIN_HEIGHT);
 
+                            // Rounded pinhead
+                            translate([0, 0, PIN_HEIGHT])
+                                sphere(r=PIN_RADIUS);
+                        }
+                    }
+
+                    // Connection lines
                     translate([GRID_LENGTH_X / 2 - PIN_CONNECTION_WIDTH / 2, 0, -PIN_HEIGHT])
                         cube([PIN_CONNECTION_WIDTH, GRID_LENGTH_X, PIN_CONNECTION_THICKNESS]);
                     translate([0, GRID_LENGTH_Y / 2 - PIN_CONNECTION_WIDTH / 2, -PIN_HEIGHT])
