@@ -1,8 +1,8 @@
 // The design is parametric, so only the constants below need to be changed.
 //// Dimension configuration ////
 //$fn = 40; // Set $fn to 40 before exporting to .stl to round the pinheads.
-NUM_GRID_X = 24;
-NUM_GRID_Y = 18;
+NUM_GRID_X = 8;
+NUM_GRID_Y = 8;
 GRID_LENGTH_X = 10;
 GRID_LENGTH_Y = 10;
 THREAD_WIDTH_X = 2;
@@ -12,10 +12,11 @@ THREAD_THICKNESS_Y = 2.5;
 WALL_THICKNESS = 10;
 WALL_HEIGHT = 5;
 
-PIN_RADIUS = 2.5;
-PIN_HEIGHT = 15;
+PIN_THICKNESS = 4;
+PIN_LENGTH = 8;
 PIN_CONNECTION_THICKNESS = 0.25;
 PIN_CONNECTION_WIDTH = 0.25;
+PIN_PARALLEL_TO_X = true; // Set the parabola direction
 ////////////////////////////////
 
 
@@ -23,6 +24,12 @@ PIN_CONNECTION_WIDTH = 0.25;
 RENDER_SUPPORTIVE_GRID = true;
 RENDER_PIN_GRID = true;
 ///////////////////////
+
+
+// Parabolic function for push pins
+function pin_fn(x) = 8 / GRID_LENGTH_X * x * x;
+// Lower this value if the parabolas start overlapping each other
+PARABOLA_WIDTH_RATIO = 3 / 8; // Should be a floating point expressable in powers of 1/2
 
 
 if (RENDER_SUPPORTIVE_GRID) {
@@ -65,21 +72,23 @@ module pin_grid() {
         for (offsetY = [0 : GRID_LENGTH_Y : GRID_LENGTH_Y * NUM_GRID_Y - 0.001]) 
             translate([offsetX + THREAD_WIDTH_X / 2, offsetY + THREAD_WIDTH_Y / 2, 0])
                 union() {
-                    translate([GRID_LENGTH_X / 2, GRID_LENGTH_Y / 2, -PIN_HEIGHT]) {
-                        hull() {
-                            // Actual pin
-                            cylinder(r=PIN_RADIUS, h=PIN_HEIGHT);
-
-                            // Rounded pinhead
-                            translate([0, 0, PIN_HEIGHT])
-                                sphere(r=PIN_RADIUS);
+                    translate([GRID_LENGTH_X / 2, GRID_LENGTH_Y / 2, 0]) {
+                        rotate([0, 0, PIN_PARALLEL_TO_X ? 0 : 90]) {
+                            translate([0, -PIN_THICKNESS / 2, 0]) {
+                                rotate([-90, 0, 0]) {
+                                    color("cyan")
+                                    linear_extrude(height=PIN_THICKNESS) {
+                                        polygon([for (x = [-PIN_LENGTH / 2 : PIN_LENGTH/ 16 : PIN_LENGTH / 2]) [x, pin_fn(x)]]);
+                                    }
+                                }
+                            }
                         }
                     }
 
                     // Connection lines
-                    translate([GRID_LENGTH_X / 2 - PIN_CONNECTION_WIDTH / 2, 0, -PIN_HEIGHT])
+                    translate([GRID_LENGTH_X / 2 - PIN_CONNECTION_WIDTH / 2, 0, -pin_fn(PIN_LENGTH / 2)])
                         cube([PIN_CONNECTION_WIDTH, GRID_LENGTH_X, PIN_CONNECTION_THICKNESS]);
-                    translate([0, GRID_LENGTH_Y / 2 - PIN_CONNECTION_WIDTH / 2, -PIN_HEIGHT])
+                    translate([0, GRID_LENGTH_Y / 2 - PIN_CONNECTION_WIDTH / 2, -pin_fn(PIN_LENGTH / 2)])
                         cube([GRID_LENGTH_Y, PIN_CONNECTION_WIDTH, PIN_CONNECTION_THICKNESS]);
                 }
 }
