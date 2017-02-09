@@ -5,7 +5,7 @@ ENDCAP_LENGTH = 20;
 
 union() {
     translate([40, 10, -10]) {
-        import("v-slot_endcap_2020.stl");
+        import("v-slot_endcap_2020_fixed.stl");
     }
 
     translate([0, 0, -ENDCAP_LENGTH]) {
