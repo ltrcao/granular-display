@@ -28,8 +28,6 @@ RENDER_PIN_GRID = true;
 
 // Parabolic function for push pins
 function pin_fn(x) = 8 / GRID_LENGTH_X * x * x;
-// Lower this value if the parabolas start overlapping each other
-PARABOLA_WIDTH_RATIO = 3 / 8; // Should be a floating point expressable in powers of 1/2
 
 
 if (RENDER_SUPPORTIVE_GRID) {
