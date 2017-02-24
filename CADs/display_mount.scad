@@ -11,8 +11,8 @@ REAR_MOUNT_SIDE_WIDTH = 30 + MOUNT_THICKNESS;
 FRONT_MOUNT_SIDE_WIDTH = 20 + 2 * MOUNT_THICKNESS;
 
 
-print_tray();
-//visualize();
+//print_tray();
+visualize();
 
 // Assemble printables onto a tray
 module print_tray() {

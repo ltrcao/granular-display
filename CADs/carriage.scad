@@ -1,4 +1,5 @@
 // Basing on C-Bot Bowden carriage design at http://openbuilds.com/builds/c-bot.1146/
+// Also using servo bracket from http://www.thingiverse.com/thing:1310167
 
 //print_tray();
 render();
@@ -51,6 +52,23 @@ module platform() {
                     cylinder(r=2.5, h=5);
             }
         }
+    }
+
+    translate([24.25, -5, 1]) {
+        // Trimmed servo bracket
+        difference() {
+            servo_bracket();
+            cube([10, 8.3, 5.5]);
+            translate([0, 41.7, 0])
+                cube([10, 8.3, 6]);
+        }
+    }
+}
+
+// Servo bracket translated to origin
+module servo_bracket() {
+    translate([10, 25, 15]) {
+        import("servo_bracket.stl", convexity=3);
     }
 }
 
