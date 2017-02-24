@@ -7,7 +7,7 @@ MOUNT_TOP_LENGTH = 70;
 // Constants below shouldn't be changed. They're specific to the C-Bot corner pieces.
 MOUNT_TOTAL_HEIGHT = 85 + MOUNT_HEIGHT; // 85 is height of the C-Bot corner pieces.
 MOUNT_THICKNESS = 5;
-REAR_MOUNT_SIDE_WIDTH = 30 + MOUNT_THICKNESS;
+REAR_MOUNT_SIDE_WIDTH = 25 + MOUNT_THICKNESS;
 FRONT_MOUNT_SIDE_WIDTH = 20 + 2 * MOUNT_THICKNESS;
 
 
@@ -133,14 +133,14 @@ module rear_mount() {
         cube([MOUNT_THICKNESS, REAR_MOUNT_SIDE_WIDTH, MOUNT_TOTAL_HEIGHT]);
 
         // Bottom M5 hole
-        translate([-MOUNT_THICKNESS, 15, 10]) {
+        translate([-MOUNT_THICKNESS, 10, 10]) {
             rotate([0, 90, 0]) {
                 cylinder(r=2.5, h=3 * MOUNT_THICKNESS, $fn=40);
             }
         }
 
         // Top M5 hole
-        translate([-MOUNT_THICKNESS, 15, 30]) {
+        translate([-MOUNT_THICKNESS, 10, 30]) {
             rotate([0, 90, 0]) {
                 cylinder(r=2.5, h=3 * MOUNT_THICKNESS, $fn=40);
             }
