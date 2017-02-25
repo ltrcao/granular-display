@@ -1,44 +1,99 @@
 // Using a portion of the servo arm mount from http://www.thingiverse.com/thing:1156995
-MOUNT_THICKNESS = 5;
+MOUNT_THICKNESS = 3;
 
-difference() {
-    // Mount piece for ball caster
-    cube([15, MOUNT_THICKNESS, 15]);
+one_inch_mount();
+//three_quarter_mount();
 
-    // 1st bolt hole's xy-coordinate
-    x = 2.5; y = 4.5;
-    // Mounting screws' triangle edge length
-    l = 10; // TODO Determine this from the actual ball caster
+module one_inch_mount() {
+    one_inch_block();
+    arm_mount();
+}
 
-    // 1st M3 bolt hole
-    translate([x, MOUNT_THICKNESS, y]) {
-        rotate([90, 0, 0]) {
-            cylinder(r=1.5, h=MOUNT_THICKNESS, $fn=40);
+module three_quarter_mount() {
+    three_quarter_block();
+    arm_mount();
+}
+
+// Arrange M2 bolt holes spaced by a 15mm distance center-to-center on a block
+module three_quarter_block() {
+    difference() {
+        // Mount piece for ball caster
+        translate([-3, 0, 0]) {
+            cube([18, MOUNT_THICKNESS, 13]);
         }
-    }
 
-    // 2nd M3 bolt hole
-    translate([x, MOUNT_THICKNESS, y]) {
-        rotate([90, 0, 0]) {
-            translate([l, 0, 0]) {
-                cylinder(r=1.5, h=MOUNT_THICKNESS, $fn=40);
+        // 1st bolt hole's xy-coordinate
+        x = -1.5; y = 7.5;
+        // Mounting screws' triangle edge length
+        l = 15; // 3/4" ball caster has 15mm center-to-center distance
+        b = 1; // 3/4" ball caster uses M2 bolts
+
+        // 1st M2 bolt hole
+        translate([x, MOUNT_THICKNESS, y]) {
+            rotate([90, 0, 0]) {
+                translate([0, 0, -MOUNT_THICKNESS]) {
+                    cylinder(r=b, h=3*MOUNT_THICKNESS, $fn=40);
+                }
             }
         }
-    }
 
-    // 3rd M3 bolt hole
-    translate([x, MOUNT_THICKNESS, y]) {
-        rotate([90, -60, 0]) {
-            translate([l, 0, 0]) {
-                cylinder(r=1.5, h=MOUNT_THICKNESS, $fn=40);
+        // 2nd M2 bolt hole
+        translate([x, MOUNT_THICKNESS, y]) {
+            rotate([90, 0, 0]) {
+                translate([l, 0, -MOUNT_THICKNESS]) {
+                    cylinder(r=b, h=3*MOUNT_THICKNESS, $fn=40);
+                }
             }
         }
     }
 }
 
-// Eye-balling shenanigans to get the arm mount to sit flush against the xz-plane on one side.
-translate([-0.3, -7.68, 0]) {
-    rotate([0, 0, -2.2]) {
-        import("servo_arm_mount.stl");
+// Arrange M3 bolt holes spaced by a 12mm distance center-to-center on a block
+module one_inch_block() {
+    difference() {
+        // Mount piece for ball caster
+        cube([14.6, MOUNT_THICKNESS, 22]);
+
+        // 1st bolt hole's xy-coordinate
+        x = 1.3; y = 7.5;
+        // Mounting screws' triangle edge length
+        l = 12; // 1" ball caster has 12mm center-to-center distance
+        b = 1.5; // 1" ball caster uses M3 bolts
+
+        // 1st M3 bolt hole
+        translate([x, MOUNT_THICKNESS, y]) {
+            rotate([90, 0, 0]) {
+                translate([0, 0, -MOUNT_THICKNESS]) {
+                    cylinder(r=b, h=3*MOUNT_THICKNESS, $fn=40);
+                }
+            }
+        }
+
+        // 2nd M3 bolt hole
+        translate([x, MOUNT_THICKNESS, y]) {
+            rotate([90, 0, 0]) {
+                translate([l, 0, -MOUNT_THICKNESS]) {
+                    cylinder(r=b, h=3*MOUNT_THICKNESS, $fn=40);
+                }
+            }
+        }
+
+        // 3rd M3 bolt hole
+        translate([x, MOUNT_THICKNESS, y]) {
+            rotate([90, -60, 0]) {
+                translate([l, 0, -MOUNT_THICKNESS]) {
+                    cylinder(r=b, h=3*MOUNT_THICKNESS, $fn=40);
+                }
+            }
+        }
+    }
+}
+
+module arm_mount() {
+    // Eye-balling shenanigans to get the arm mount to sit flush against the xz-plane on one side.
+    translate([-0.3, -7.68, 0]) {
+        rotate([0, 0, -2.2]) {
+            import("servo_arm_mount.stl");
+        }
     }
 }
