@@ -1,16 +1,21 @@
 // Using a portion of the servo arm mount from http://www.thingiverse.com/thing:1156995
-MOUNT_THICKNESS = 3;
+MOUNT_THICKNESS = 5;
+MOUNT_DISTANCE = 12;
 
 one_inch_mount();
 //three_quarter_mount();
 
 module one_inch_mount() {
-    one_inch_block();
+    translate([0, MOUNT_DISTANCE, 0]) {
+        one_inch_block();
+    }
     arm_mount();
 }
 
 module three_quarter_mount() {
-    three_quarter_block();
+    translate([0, MOUNT_DISTANCE, 0]) {
+        three_quarter_block();
+    }
     arm_mount();
 }
 
@@ -96,4 +101,7 @@ module arm_mount() {
             import("servo_arm_mount.stl");
         }
     }
+
+    // Also add a small bridge
+    cube([12, MOUNT_DISTANCE, 2.5]);
 }
