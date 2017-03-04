@@ -1,6 +1,7 @@
 // Using a portion of the servo arm mount from http://www.thingiverse.com/thing:1156995
 MOUNT_THICKNESS = 5;
 MOUNT_DISTANCE = 12;
+BRIDGE_THICKNESS = 20;
 
 one_inch_mount();
 //three_quarter_mount();
@@ -57,10 +58,10 @@ module three_quarter_block() {
 module one_inch_block() {
     difference() {
         // Mount piece for ball caster
-        cube([14.6, MOUNT_THICKNESS, 22]);
+        cube([16, MOUNT_THICKNESS, 22]);
 
         // 1st bolt hole's xy-coordinate
-        x = 1.3; y = 7.5;
+        x = 2; y = 7.5;
         // Mounting screws' triangle edge length
         l = 12; // 1" ball caster has 12mm center-to-center distance
         b = 1.5; // 1" ball caster uses M3 bolts
@@ -103,5 +104,6 @@ module arm_mount() {
     }
 
     // Also add a small bridge
-    cube([12, MOUNT_DISTANCE, 2.5]);
+    translate([0, -7.5, -BRIDGE_THICKNESS])
+    cube([16, MOUNT_DISTANCE + MOUNT_THICKNESS + 7.5, BRIDGE_THICKNESS]);
 }
