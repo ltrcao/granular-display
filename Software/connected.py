@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 import PixelClustering as PC
+import GcodeGenerator as GcG
 
 NUM_ROWS = 20
 NUM_COLS = 20
@@ -37,4 +38,8 @@ for k, v in clustering.get_clusters().items():
 
 plt.imshow(image, cmap = 'Dark2', interpolation = 'none')
 plt.show()
+
+GcGen = GcG.GcodeGenerator(clustering.get_clusters())
+GcGen.generate_simple_cmds('gcode_test.gcode')
+
 
