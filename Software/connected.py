@@ -5,8 +5,8 @@ import random
 import PixelClustering as PC
 import GcodeGenerator as GcG
 
-NUM_ROWS = 20
-NUM_COLS = 20
+NUM_ROWS = 13
+NUM_COLS = 14
 
 x_range = np.array(range(NUM_ROWS))
 y_range = np.array(range(NUM_COLS))
