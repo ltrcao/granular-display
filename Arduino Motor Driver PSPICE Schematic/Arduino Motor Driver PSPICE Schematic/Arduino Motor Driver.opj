@@ -19,13 +19,17 @@
       (Sort User)))
   (DefaultLibraryBrowseDirectory "library\PSpice")
   (PartMRUSelector
-    (GND
-      (LibraryName "C:\ORCAD\ORCAD_10.0_DEMO\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
-      (DeviceIndex "0"))
     (VDC
       (FullPartName "VDC.Normal")
       (LibraryName
          "C:\ORCAD\ORCAD_10.0_DEMO\TOOLS\CAPTURE\LIBRARY\PSPICE\SOURCE.OLB")
+      (DeviceIndex "0"))
+    (0
+      (LibraryName
+         "C:\ORCAD\ORCAD_10.0_DEMO\TOOLS\CAPTURE\LIBRARY\PSPICE\SOURCE.OLB")
+      (DeviceIndex "0"))
+    (GND
+      (LibraryName "C:\ORCAD\ORCAD_10.0_DEMO\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
       (DeviceIndex "0"))
     (C
       (FullPartName "C.Normal")
@@ -49,15 +53,7 @@
       (DeviceIndex "0")))
   (GlobalState
     (FileView
-      (Path "Design Resources")
-      (Path "Design Resources"
-         "C:\Users\Kevin Truong\Desktop\PSpice Files\Arduino Motor Driver\arduino motor driver.dsn")
-      (Path "Design Resources"
-         "C:\Users\Kevin Truong\Desktop\PSpice Files\Arduino Motor Driver\arduino motor driver.dsn"
-         "SCHEMATIC1")
-      (Select "Design Resources"
-         "C:\Users\Kevin Truong\Desktop\PSpice Files\Arduino Motor Driver\arduino motor driver.dsn"
-         "SCHEMATIC1" "PAGE2"))
+      (Path "Design Resources"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
@@ -67,8 +63,8 @@
     (Doc
       (Type "COrSchematicDoc")
       (Frame
-        (Placement "44 2 3 -1 -1 -8 -31 78 1258 78 494")
-        (Scroll "1124 160")
+        (Placement "44 2 3 -1 -1 -8 -31 151 1331 84 500")
+        (Scroll "1047 101")
         (Zoom "100")
         (Occurrence "/"))
       (Path

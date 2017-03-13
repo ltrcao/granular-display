@@ -1,9 +1,10 @@
 // Basing on C-Bot Bowden carriage design at http://openbuilds.com/builds/c-bot.1146/
+// Also using servo bracket from http://www.thingiverse.com/thing:1310167
 
-print_tray();
-//render();
+//print_tray();
+render();
 
-// Assemble the plates on a tray for printing
+// Assemble printables on a tray for easy printing
 module print_tray() {
     translate([5, 0, 5])
         rotate([0, 90, 0]) 
@@ -12,6 +13,9 @@ module print_tray() {
     translate([0, 0, 0])
         rotate([0, -90, 0]) 
             rear_plate();
+
+    translate([0, 85, 0])
+        platform();
 }
 
 // Visualize carriage with plastic overhang
@@ -20,10 +24,56 @@ module render() {
     translate([5 + 6.5 * 2 + 9, 0, 0]) { // plate thickness + 2 * spacers + wheel thickness
         rear_plate();
     }
+    translate([-13, 20, 72.5]) {
+        platform();
+    }
 }
 
-// Platform/Overhang plastic for placing the imprint actuator
+// Platform to be screwed on top of overhang
 module platform() {
+    width = 5 * 2 + 6.5 * 2 + 9 + 13 * 2; // plate thickness + gap distance + 2 * overhang width
+
+    difference() {
+        // Platform itself
+        cube([width, 40, 5]);
+
+        // M5 bolt holes
+        translate([width / 2, 20, 0]) {
+            translate([0, -12, 0]) {
+                translate([-23, 0, 0])
+                    cylinder(r=2.5, h=5);
+                translate([23, 0, 0])
+                    cylinder(r=2.5, h=5);
+            }
+            translate([0, 12, 0]) {
+                translate([-23, 0, 0])
+                    cylinder(r=2.5, h=5);
+                translate([23, 0, 0])
+                    cylinder(r=2.5, h=5);
+            }
+        }
+    }
+
+    translate([24.25, -5, 1]) {
+        // Trimmed servo bracket
+        difference() {
+            servo_bracket();
+            cube([10, 8.3, 5.5]);
+            translate([0, 41.7, 0])
+                cube([10, 8.3, 6]);
+        }
+    }
+}
+
+// Servo bracket translated to origin
+module servo_bracket() {
+    translate([10, 25, 15]) {
+        import("servo_bracket.stl", convexity=3);
+    }
+}
+
+// Overhang for placing the imprint actuator
+module overhang() {
     difference() {
         union() {
             cube([5, 40, 15 + 2]);
@@ -55,7 +105,7 @@ module front_plate() {
 
     // Overhanging platform
     translate([0, 20, 50]) {
-        platform();
+        overhang();
     }
 }
 
@@ -66,7 +116,7 @@ module rear_plate() {
     // Overhanging platform
     translate([5, 60, 50]) {
         rotate([0, 0, 180])
-        platform();
+        overhang();
     }
 }
 
