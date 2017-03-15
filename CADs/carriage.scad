@@ -1,8 +1,17 @@
 // Basing on C-Bot Bowden carriage design at http://openbuilds.com/builds/c-bot.1146/
 // Also using servo bracket from http://www.thingiverse.com/thing:1310167
+MOUNT_THICKNESS = 5;
+MOUNT_DISTANCE = 12;
+BRIDGE_THICKNESS = 20;
+
 
 //print_tray();
-render();
+//render();
+
+translate([0,0,00]) platform(true);
+//platform(true);
+
+
 
 // Assemble printables on a tray for easy printing
 module print_tray() {
@@ -30,7 +39,7 @@ module render() {
 }
 
 // Platform to be screwed on top of overhang
-module platform() {
+module platform(stabilizers=false) {
     width = 5 * 2 + 6.5 * 2 + 9 + 13 * 2; // plate thickness + gap distance + 2 * overhang width
 
     difference() {
@@ -51,6 +60,67 @@ module platform() {
                 translate([23, 0, 0])
                     cylinder(r=2.5, h=5);
             }
+            translate([0,0,0]){
+                cylinder(r=2.5, h=5);
+            }
+        }
+        
+        if(!stabilizers){
+            translate([width/2-8.1,32,0]){
+                rotate([90,0,0]){
+                    // 1st bolt hole's xy-coordinate
+                    x = 2; y = 7.5;
+                    // Mounting screws' triangle edge length
+                    l = 12; // 1" ball caster has 12mm center-to-center distance
+                    b = 1.5; // 1" ball caster uses M3 bolts
+
+                    // 1st M3 bolt hole
+                    translate([x, MOUNT_THICKNESS, y]) {
+                        rotate([90, 0, 0]) {
+                            translate([0, 0, -MOUNT_THICKNESS]) {
+                                cylinder(r=b, h=3*MOUNT_THICKNESS, $fn=40);
+                            }
+                        }
+                    }
+
+                    // 2nd M3 bolt hole
+                    translate([x, MOUNT_THICKNESS, y]) {
+                        rotate([90, 0, 0]) {
+                            translate([l, 0, -MOUNT_THICKNESS]) {
+                                cylinder(r=b, h=3*MOUNT_THICKNESS, $fn=40);
+                            }
+                        }
+                    }
+
+                    // 3rd M3 bolt hole
+                    translate([x, MOUNT_THICKNESS, y]) {
+                        rotate([90, -60, 0]) {
+                            translate([l, 0, -MOUNT_THICKNESS]) {
+                                cylinder(r=b, h=3*MOUNT_THICKNESS, $fn=40);
+                            }
+                        }
+                    }
+                }
+            }
+        
+            translate([width/2-20.25,(40/2)-4.25,-10]){
+                cube([8.5,8.5,30]);
+                translate([30.25,0,0]) cube([8.5,8.5,30]);
+            }
+        }
+    }
+    
+    //horizontal stabilizers
+    if(stabilizers){
+        translate([width/2-20,(40/2)-4,0]){
+            cube([8,8,30]);
+            translate([30,0,0]) cube([8,8,30]);
+        }
+    }else{
+        translate([20,32,10]){
+            rotate([90,0,0]) {
+                //import("onein_ball_mount.stl");
+            }
         }
     }
 
@@ -62,6 +132,16 @@ module platform() {
             translate([0, 41.7, 0])
                 cube([10, 8.3, 6]);
         }
+    }
+}
+
+
+// Arrange M3 bolt holes spaced by a 12mm distance center-to-center on a block
+module one_inch_block() {
+    difference() {
+        // Mount piece for ball caster
+        cube([16, MOUNT_THICKNESS, 22]);
+
     }
 }
 
