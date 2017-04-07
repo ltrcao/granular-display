@@ -5,12 +5,11 @@ MOUNT_DISTANCE = 12;
 BRIDGE_THICKNESS = 20;
 
 
-//print_tray();
+print_tray();
 //render();
 
-translate([0,0,-15]) platform(true);
-platform(false);
-
+//translate([0,0,-15]) platform(true);
+//platform(false);
 
 
 // Assemble printables on a tray for easy printing
@@ -23,8 +22,11 @@ module print_tray() {
         rotate([0, -90, 0])
             rear_plate();
 
-    translate([0, 85, 0])
+    translate([5, 85, 0])
         platform();
+
+    translate([-60, 85, 0])
+        platform(true);
 }
 
 // Visualize carriage with plastic overhang
@@ -34,7 +36,10 @@ module render() {
         rear_plate();
     }
     translate([-13, 20, 72.5]) {
-        platform();
+        platform(true);
+        translate([0, 0, 15]) {
+            platform(false);
+        }
     }
 }
 
