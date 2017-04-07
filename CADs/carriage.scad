@@ -8,19 +8,19 @@ BRIDGE_THICKNESS = 20;
 //print_tray();
 //render();
 
-translate([0,0,00]) platform(true);
-//platform(true);
+translate([0,0,-15]) platform(true);
+platform(false);
 
 
 
 // Assemble printables on a tray for easy printing
 module print_tray() {
     translate([5, 0, 5])
-        rotate([0, 90, 0]) 
+        rotate([0, 90, 0])
             front_plate();
 
     translate([0, 0, 0])
-        rotate([0, -90, 0]) 
+        rotate([0, -90, 0])
             rear_plate();
 
     translate([0, 85, 0])
@@ -40,14 +40,19 @@ module render() {
 
 // Platform to be screwed on top of overhang
 module platform(stabilizers=false) {
-    width = 5 * 2 + 6.5 * 2 + 9 + 13 * 2; // plate thickness + gap distance + 2 * overhang width
+    platform_width = 5 * 2 + 6.5 * 2 + 9 + 13 * 2; // plate thickness + gap distance + 2 * overhang width
+    platform_length = 40;
+
+    stabilizer_width = 8;
+    stabilizer_height = 30;
+    stabilizer_distance = 46;
 
     difference() {
         // Platform itself
-        cube([width, 40, 5]);
+        cube([platform_width, platform_length, 5]);
 
         // M5 bolt holes
-        translate([width / 2, 20, 0]) {
+        translate([platform_width / 2, platform_length / 2, 0]) {
             translate([0, -12, 0]) {
                 translate([-23, 0, 0])
                     cylinder(r=2.5, h=5);
@@ -64,9 +69,9 @@ module platform(stabilizers=false) {
                 cylinder(r=2.5, h=5);
             }
         }
-        
+
         if(!stabilizers){
-            translate([width/2-8.1,32,0]){
+            translate([platform_width/2-8,32,0]){
                 rotate([90,0,0]){
                     // 1st bolt hole's xy-coordinate
                     x = 2; y = 7.5;
@@ -102,21 +107,27 @@ module platform(stabilizers=false) {
                     }
                 }
             }
-        
-            translate([width/2-20.25,(40/2)-4.25,-10]){
-                cube([8.5,8.5,30]);
-                translate([30.25,0,0]) cube([8.5,8.5,30]);
+
+            sliding_offset = 1.0;
+            translate([platform_width/2 - stabilizer_width/2 - stabilizer_distance/2 - sliding_offset/2,
+                       platform_length/2 - stabilizer_width/2 - sliding_offset/2,
+                       0]) {
+                cube([stabilizer_width + sliding_offset, stabilizer_width + sliding_offset, stabilizer_height]);
+                translate([stabilizer_distance,0,0])
+                    cube([stabilizer_width + sliding_offset, stabilizer_width + sliding_offset, stabilizer_height]);
             }
         }
     }
-    
+
     //horizontal stabilizers
-    if(stabilizers){
-        translate([width/2-20,(40/2)-4,0]){
-            cube([8,8,30]);
-            translate([30,0,0]) cube([8,8,30]);
+    if(stabilizers) {
+        translate([platform_width/2 - stabilizer_width/2 - stabilizer_distance/2,
+                   platform_length/2 - stabilizer_width/2,
+                   0]) {
+            cube([stabilizer_width, stabilizer_width, stabilizer_height]);
+            translate([stabilizer_distance,0,0]) cube([stabilizer_width, stabilizer_width, stabilizer_height]);
         }
-    }else{
+    } else {
         translate([20,32,10]){
             rotate([90,0,0]) {
                 //import("onein_ball_mount.stl");
@@ -192,7 +203,7 @@ module front_plate() {
 // Modify original rear plate to fit the granular display imprint actuator
 module rear_plate() {
     rear_plate_template();
-    
+
     // Overhanging platform
     translate([5, 60, 50]) {
         rotate([0, 0, 180])
